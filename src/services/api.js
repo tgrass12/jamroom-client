@@ -9,7 +9,7 @@ export function makeApiCall(verb, path, payload) {
         return resolve(res.data)
       })
       .catch(err => {
-        reject(err.response.data.err);
+        reject(err.response.data);
       });  
   })
 }

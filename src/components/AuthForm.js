@@ -27,12 +27,22 @@ class AuthForm extends Component {
       })
   }
 
+
   render() {
     const {username, email, password} = this.state;
-    const {buttonText, isSignUp} = this.props;
+    const {pageType, isSignUp, errors, removeError, history} = this.props;
+
+    history.listen(() => {
+      removeError();
+    })
+
     return(
       <div>
         <form className="justify-content-md-center text-center auth-form" onSubmit={this.handleSubmit}>
+          <h1>{pageType}</h1>
+          {errors.message && 
+            <div className="alert alert-danger">{errors.message}</div>
+          }
           {isSignUp && (
             <div>
               <label htmlFor="username">Username: </label>
@@ -71,7 +81,7 @@ class AuthForm extends Component {
               onChange={this.handleChange}
             />
           </div>
-          <button className="btn btn-primary"type="submit">{buttonText}</button>
+          <button className="btn btn-primary"type="submit">{pageType}</button>
         </form>
       </div>
     );
