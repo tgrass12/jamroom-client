@@ -1,6 +1,8 @@
 {
   "root": "build/",
-  "routes": "/**",
+  "routes": {
+    "/**": "index.html"
+  },
   "proxies": {
     "/api": {
       "origin": "https://jamroom-server.herokuapp.com/api"
