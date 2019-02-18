@@ -39,7 +39,7 @@ class SpotifyConnected extends Component {
 
     makeApiCall(
       'post', 
-      'http://localhost:3000/api/spotify/connect',
+      '/api/spotify/connect',
       {
         "code": authCode
       }
