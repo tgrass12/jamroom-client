@@ -1,0 +1,149 @@
+body {
+  height: 100vh;
+  background-color: #cac8d1;
+}
+
+.color-primary {
+  color: #8d6bea;
+}
+
+.spinner {
+  color: #8d6bea;
+}
+
+.btn-primary {
+  background-color: #8d6bea;
+  border-color: #8d6bea;
+}
+
+.btn-primary:hover {
+  background-color: #654da8;
+  border-color: #654da8;
+}
+
+nav {
+  background: black;
+}
+
+.navbar a, .navbar-nav > a {
+  font-size: 1.5em;
+  text-decoration: none;
+  color: white;
+  margin: 5px 5px;
+}
+
+.navbar a:hover {
+  color: #8d6bea;
+}
+
+.navbar-nav {
+  flex-direction: row;
+}
+
+.spotify-container > div {
+  display: flex;
+  height: 50vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Auth form */
+.auth-form {
+  display: flex;
+  height: 50vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.auth-form button {
+  margin: 1em;
+}
+
+/* Song search */
+
+.track-search {
+  border-radius: 1em;
+  padding-left: 1em;
+  margin: 5px;
+}
+
+.track-search {
+  padding: 0;
+}
+
+.track-search:focus {
+  outline: none;
+}
+
+button.btn {
+  margin: 5px 0;
+}
+
+.card.col-md-6 {
+  padding: 0;
+}
+
+.btn-track {
+  padding: 2px 2px;
+  height: 20px;
+  width: 20px;
+  font-size: 10px;
+}
+
+.list-group {
+  margin: 5px;
+}
+
+.list-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.track-details {
+  display: flex;
+}
+
+.track-artist {
+  margin-left: 1em;
+  margin-bottom: 0px;
+  font-size: 0.6em;
+}
+
+.track-title {
+  margin: 0px;
+  font-size: 0.85em;
+}
+
+.track-info {
+  margin-left: 10px;
+}
+
+.track-album-art {
+  width: 45px;
+  height: 45px;
+}
+
+.btn-container {
+  display: flex;
+  flex: 2 1 auto;
+  justify-content: flex-end;
+}
+
+.btn.btn-playback {
+  margin: 5px;
+}
+
+.landing {
+  width: 100vh;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,9 @@
+{
+  "root": "build/",
+  "routes": "/**",
+  "proxies": {
+    "/api": {
+      "origin": "https://jamroom-server.herokuapp.com/api"
+    }
+  }
+}
