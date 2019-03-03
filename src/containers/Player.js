@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {getUserDevices, playTrack, resumePlayback, pausePlayback, setDevice} from '../services/spotify';
+import Script from 'react-load-script';
+import {getUserDevices,
+        playTrack,
+        resumePlayback, 
+        pausePlayback, 
+        setDevice,
+        getPlayerStatus} from '../services/spotify';
 import {removeFromQueue} from '../store/actions/queue';
-
+import {getAccessToken} from '../services/api';
 import PlaybackControls from '../components/PlaybackControls';
 import Device from '../components/Device';
 import Track from '../components/Track';
@@ -15,7 +21,8 @@ class Player extends Component {
       currentTrackDuration: 0,
       devices: [],
       triggerQueueChange: null,
-      isPlaying: false
+      isPlaying: false,
+      playerLoaded: false
     }
 
     this.getDevices = this.getDevices.bind(this);
@@ -24,13 +31,53 @@ class Player extends Component {
     this.resumePlayback = this.resumePlayback.bind(this);
   }
 
-  componentWillMount() {
-    this.getDevices();
+  componentDidMount() {
+    window.onSpotifyWebPlaybackSDKReady = () => {
+      this.handleWebPlayerLoad();
+    }
+  }
+
+  async handleWebPlayerLoad() {
+    const token = await getAccessToken();
+    const player = new window.Spotify.Player({
+      name: 'Web Player',
+      getOAuthToken: cb => { cb(token); }
+    });
+
+    // Error handling
+    player.addListener('initialization_error', ({ message }) => { console.error(message); });
+    player.addListener('authentication_error', ({ message }) => { console.error(message); });
+    player.addListener('account_error', ({ message }) => { console.error(message); });
+    player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+    // Playback status updates
+    player.addListener('player_state_changed', state => { });
+
+    // Ready
+    player.addListener('ready', async ({ device_id }) => {
+      await this.setActiveDevice(device_id);
+      this.setState({playerLoaded: true});
+    });
+
+    // Not Ready
+    player.addListener('not_ready', ({ device_id }) => {
+      console.log('Device ID has gone offline', device_id);
+    });
+
+    // Connect to the player!
+    player.connect();
   }
 
   async setActiveDevice(deviceId) {
     await setDevice(deviceId);
-    this.getDevices();
+    //TODO: Do this without setTimeout
+    // PlayerStatus isn't updated quick enough after playback is transferred
+    // to show the correct 'active' device.
+    await setTimeout(() => {
+      getPlayerStatus().then(res => {
+        this.getDevices();
+      })
+    }, 500);
   }
 
   async getDevices() {
@@ -106,6 +153,7 @@ class Player extends Component {
 
     return (
       <div className="col-md-12">
+      <Script url="https://sdk.scdn.co/spotify-player.js" /> 
         <div className="row">
           <div className="col-md-6">
             <h1>Current Track</h1>
@@ -135,8 +183,8 @@ class Player extends Component {
                 onClick={this.getDevices}>
                 Get Devices
               </button>
-            {devices.length === 0 && (
-              <p>No valid devices.</p>
+            {!this.state.playerLoaded && (
+              <p>Loading devices...</p>
             )}
             <ul>
               {deviceComponents}

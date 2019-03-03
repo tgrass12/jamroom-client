@@ -5,7 +5,6 @@ import {getAccessToken} from '../../services/api';
 export function fetchTracks(trackQuery) {
   return async dispatch => {
     const token = await getAccessToken();
-    console.log(token);
     const authHeader = `Bearer ${token}`;
     const encoded = trackQuery.replace(' ', '+');
     const query = `?type=track,artist&q="${encoded}"`

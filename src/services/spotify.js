@@ -57,13 +57,8 @@ export async function setDevice(id) {
       {
         'Authorization': `Bearer ${token}`
       }
-  }).then(() => {
-    getPlayerStatus().then(data =>{
-      console.log(data);
-    })
   })
     .catch(err => {
-    console.log(err);
   });
 }
 
