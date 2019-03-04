@@ -23,6 +23,7 @@ class Navbar extends Component {
           )}
           {currentUser.isAuthenticated && (
             <ul className="nav navbar-nav ml-auto">
+              <Link to='/lobby/create'>Create Lobby</Link>
               <a className="logout" href="/" onClick={this.logout}>Log Out</a>
             </ul>
           )}

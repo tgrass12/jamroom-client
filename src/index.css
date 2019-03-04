@@ -147,3 +147,7 @@ button.btn {
   align-items: center;
   justify-content: center;
 }
+
+.lobby-card {
+  margin: 1em;
+}

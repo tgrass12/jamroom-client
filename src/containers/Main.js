@@ -6,15 +6,17 @@ import { removeError } from '../store/actions/errors';
 import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
 import SpotifyConnected from '../components/SpotifyConnected';
+import LobbyCreator from './LobbyCreator';
+import Lobby from './Lobby';
 
 class Main extends Component { 
   render() {
-    const {authUser, currentUser, removeError, errors} = this.props;
+    const {authUser, lobbies, currentUser, removeError, errors} = this.props;
     return (
       <div>
         <Switch>
           <Route exact path="/" render={ props => (
-             <Homepage currentUser={currentUser} {...props} />
+             <Homepage currentUser={currentUser} lobbies={lobbies} {...props} />
           )} /> 
           <Route exact path="/signin" render={ props => (
             <AuthForm 
@@ -25,7 +27,7 @@ class Main extends Component {
               {...props} 
             />
           )} />
-         <Route exact path="/signup" render={ props => (
+          <Route exact path="/signup" render={ props => (
             <AuthForm
               isSignUp
               pageType="Sign Up"
@@ -35,7 +37,15 @@ class Main extends Component {
               {...props}
             />
           )} />
-         <Route exact path="/spotify/connect" component={SpotifyConnected} />
+          <Route exact path="/spotify/connect" component={SpotifyConnected} />
+          <Route exact path="/lobby/create" render={ props => (
+            <LobbyCreator host={currentUser} {...props} />
+            )}
+          />
+          <Route path="/lobbies/:id" render={ props => (
+            <Lobby />
+            )}
+          />
         </Switch>
       </div>
     );
@@ -45,6 +55,7 @@ class Main extends Component {
 function mapStateToProps(state) {
   return {
     currentUser: state.currentUser,
+    lobbies: state.lobbies,
     errors: state.errors
   }
 }

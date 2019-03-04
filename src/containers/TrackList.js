@@ -1,22 +1,35 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import { addToQueue, getQueue, removeFromQueue } from '../store/actions/queue';
+import { withRouter } from 'react-router-dom';
+import { 
+  addToLobbyQueue, 
+  getLobbyQueue, 
+  removeFromLobbyQueue 
+} from '../store/actions/queue';
 import Track from '../components/Track';
 
 class TrackList extends Component {
   componentDidMount() {
     if(this.props.isQueue) {
-      this.props.getQueue();
+      const lobbyId = this.props.match.params.id;
+      this.props.getLobbyQueue(lobbyId);
     }
   }
 
   addToQueue(trackInfo) {
     const uid = `${Date.now()}:${trackInfo.uri}`;
-    this.props.addToQueue({...trackInfo, uid: uid});
+    //TODO: Remove all dependencies to withRouter for lobbyId by fixing state
+    this.props.addToLobbyQueue(
+      this.props.match.params.id,
+      {...trackInfo, uid: uid}
+    );
   }
 
   removeFromQueue(trackInfo) {
-    this.props.removeFromQueue(trackInfo);
+    this.props.removeFromLobbyQueue(
+      this.props.match.params.id,
+      trackInfo
+    );
   }
 
   render() {
@@ -59,4 +72,7 @@ function mapStateToProps(state) {
   })
 }
 
-export default connect(mapStateToProps, {addToQueue, getQueue, removeFromQueue})(TrackList);
+export default withRouter(connect(
+  mapStateToProps, 
+  {addToLobbyQueue, getLobbyQueue, removeFromLobbyQueue})(TrackList)
+);

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { withRouter } from 'react-router-dom';
 import {connect} from 'react-redux';
 import Script from 'react-load-script';
 import {getUserDevices,
@@ -7,7 +8,7 @@ import {getUserDevices,
         pausePlayback, 
         setDevice,
         getPlayerStatus} from '../services/spotify';
-import {removeFromQueue} from '../store/actions/queue';
+import {removeFromLobbyQueue} from '../store/actions/queue';
 import {getAccessToken} from '../services/api';
 import PlaybackControls from '../components/PlaybackControls';
 import Device from '../components/Device';
@@ -35,6 +36,11 @@ class Player extends Component {
     window.onSpotifyWebPlaybackSDKReady = () => {
       this.handleWebPlayerLoad();
     }
+  }
+
+  componentWillUnmount() {
+    //TODO: Fix playback continuing after refreshing page
+    this.pausePlayback();
   }
 
   async handleWebPlayerLoad() {
@@ -133,7 +139,8 @@ class Player extends Component {
       });
       this.pausePlayback();
     }
-    this.props.removeFromQueue(trackToPlay);  
+    const lobbyId = this.props.match.params.id;
+    this.props.removeFromLobbyQueue(lobbyId, trackToPlay);  
   }
 
   render() {
@@ -202,4 +209,4 @@ function mapStateToProps(state) {
   });
 }
 
-export default connect(mapStateToProps, {removeFromQueue})(Player);
+export default withRouter(connect(mapStateToProps, {removeFromLobbyQueue})(Player));

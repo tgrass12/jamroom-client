@@ -1,10 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Jamroom from './Jamroom';
+import LobbyBrowser from '../containers/LobbyBrowser';
 import { checkRefreshTokenCookie } from '../services/api';
 import { connectSpotify } from '../services/spotify';
 
-const Homepage = ({currentUser}) => {
+const Homepage = ({currentUser, lobbies}) => {
   const refreshToken = checkRefreshTokenCookie();
 
   if (currentUser.isAuthenticated) {
@@ -21,7 +21,7 @@ const Homepage = ({currentUser}) => {
         </div>
       )}
       {refreshToken && (
-        <Jamroom />
+        <LobbyBrowser />
       )}
       </div>
     );
